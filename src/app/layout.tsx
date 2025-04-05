@@ -7,7 +7,7 @@ import '@/shared/styles/globals.css'
 
 export const metadata: Metadata = {
 	title: {
-		absolute: 'Авторизация',
+		absolute: 'Hidezona',
 		template: '%s | Авторизация'
 	},
 	description:
