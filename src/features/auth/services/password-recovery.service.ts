@@ -11,18 +11,12 @@ class PasswordRecoveryService {
 	 * Сброс пароля.
 	 *
 	 * @param {TypeResetPasswordSchema} body - Данные для сброса пароля.
-	 * @param {string} [recaptcha] - Токен reCAPTCHA (опционально).
 	 * @returns {Promise<IAuthResponse>} - Ответ с данными пользователя.
 	 */
-	public async reset(body: TypeResetPasswordSchema, recaptcha?: string) {
-		const headers = recaptcha ? { recaptcha } : undefined
-
+	public async reset(body: TypeResetPasswordSchema) {
 		const response = await api.post<IAuthResponse>(
 			'auth/password-recovery/reset',
-			body,
-			{
-				headers
-			}
+			body
 		)
 
 		return response
@@ -33,22 +27,15 @@ class PasswordRecoveryService {
 	 *
 	 * @param {TypeNewPasswordSchema} body - Данные для нового пароля.
 	 * @param {string | null} token - Токен для подтверждения.
-	 * @param {string} [recaptcha] - Токен reCAPTCHA (опционально).
 	 * @returns {Promise<IAuthResponse>} - Ответ с данными пользователя.
 	 */
 	public async new(
 		body: TypeNewPasswordSchema,
-		token: string | null,
-		recaptcha?: string
+		token: string | null
 	) {
-		const headers = recaptcha ? { recaptcha } : undefined
-
 		const response = await api.post<IAuthResponse>(
 			`auth/password-recovery/new/${token}`,
-			body,
-			{
-				headers
-			}
+			body
 		)
 
 		return response

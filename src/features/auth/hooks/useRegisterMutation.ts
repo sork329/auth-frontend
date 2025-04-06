@@ -6,18 +6,13 @@ import { TypeRegisterSchema } from '../schemes'
 import { authService } from '../services'
 
 /**
- * Хук для выполнения мутации регистрации пользователя.
+ * Хук для выполнения мутации регистрации пользователя (без reCAPTCHA).
  */
 export function useRegisterMutation() {
 	const { mutate: register, isPending: isLoadingRegister } = useMutation({
 		mutationKey: ['register user'],
-		mutationFn: ({
-			values,
-			recaptcha
-		}: {
-			values: TypeRegisterSchema
-			recaptcha: string
-		}) => authService.register(values, recaptcha),
+		mutationFn: ({ values }: { values: TypeRegisterSchema }) =>
+			authService.register(values),
 		onSuccess(data: any) {
 			toastMessageHandler(data)
 		},

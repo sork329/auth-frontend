@@ -1,9 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useTheme } from 'next-themes'
-import { useState } from 'react'
-import ReCAPTCHA from 'react-google-recaptcha'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -27,9 +24,6 @@ import { AuthWrapper } from './index'
  * Форма регистрации нового пользователя.
  */
 export function RegisterForm() {
-	const { theme } = useTheme()
-	const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
-
 	const form = useForm<TypeRegisterSchema>({
 		resolver: zodResolver(RegisterSchema),
 		defaultValues: {
@@ -43,11 +37,7 @@ export function RegisterForm() {
 	const { register, isLoadingRegister } = useRegisterMutation()
 
 	const onSubmit = (values: TypeRegisterSchema) => {
-		if (recaptchaValue) {
-			register({ values, recaptcha: recaptchaValue })
-		} else {
-			toast.error('Пожалуйста, завершите reCAPTCHA')
-		}
+		register({ values }) // убрали recaptcha
 	}
 
 	return (
@@ -134,15 +124,7 @@ export function RegisterForm() {
 							</FormItem>
 						)}
 					/>
-					<div className='flex justify-center'>
-						<ReCAPTCHA
-							sitekey={
-								process.env.GOOGLE_RECAPTCHA_SITE_KEY as string
-							}
-							onChange={setRecaptchaValue}
-							theme={theme === 'light' ? 'light' : 'dark'}
-						/>
-					</div>
+
 					<Button type='submit' disabled={isLoadingRegister}>
 						Создать аккаунт
 					</Button>

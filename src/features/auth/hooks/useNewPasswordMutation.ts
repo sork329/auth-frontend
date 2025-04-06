@@ -18,13 +18,8 @@ export function useNewPasswordMutation() {
 
 	const { mutate: newPassword, isPending: isLoadingNew } = useMutation({
 		mutationKey: ['new password'],
-		mutationFn: ({
-			values,
-			recaptcha
-		}: {
-			values: TypeNewPasswordSchema
-			recaptcha: string
-		}) => passwordRecoveryService.new(values, token, recaptcha),
+		mutationFn: ({ values }: { values: TypeNewPasswordSchema }) =>
+			passwordRecoveryService.new(values, token),
 		onSuccess() {
 			toast.success('Пароль успешно изменён', {
 				description: 'Теперь вы можете войти в свой аккаунт.'

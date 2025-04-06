@@ -11,15 +11,10 @@ class AuthService {
 	 * Регистрация нового пользователя.
 	 *
 	 * @param {TypeRegisterSchema} body - Данные для регистрации.
-	 * @param {string} [recaptcha] - Токен reCAPTCHA (опционально).
 	 * @returns {Promise<IAuthResponse>} - Ответ с данными пользователя.
 	 */
-	public async register(body: TypeRegisterSchema, recaptcha?: string) {
-		const headers = recaptcha ? { recaptcha } : undefined
-
-		const response = await api.post<IAuthResponse>('auth/register', body, {
-			headers
-		})
+	public async register(body: TypeRegisterSchema) {
+		const response = await api.post<IAuthResponse>('auth/register', body)
 
 		return response
 	}
@@ -28,15 +23,10 @@ class AuthService {
 	 * Вход пользователя в систему.
 	 *
 	 * @param {TypeLoginSchema} body - Данные для входа.
-	 * @param {string} [recaptcha] - Токен reCAPTCHA (опционально).
 	 * @returns {Promise<IAuthResponse>} - Ответ с данными пользователя.
 	 */
-	public async login(body: TypeLoginSchema, recaptcha?: string) {
-		const headers = recaptcha ? { recaptcha } : undefined
-
-		const response = await api.post<IAuthResponse>('auth/login', body, {
-			headers
-		})
+	public async login(body: TypeLoginSchema) {
+		const response = await api.post<IAuthResponse>('auth/login', body)
 
 		return response
 	}

@@ -1,11 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useTheme } from 'next-themes'
-import { useState } from 'react'
-import ReCAPTCHA from 'react-google-recaptcha'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
+import { useTheme } from 'next-themes'
 
 import {
 	Button,
@@ -28,7 +25,6 @@ import { AuthWrapper } from './index'
  */
 export function ResetPasswordForm() {
 	const { theme } = useTheme()
-	const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
 
 	const form = useForm<TypeResetPasswordSchema>({
 		resolver: zodResolver(ResetPasswordSchema),
@@ -40,11 +36,8 @@ export function ResetPasswordForm() {
 	const { reset, isLoadingReset } = useResetPasswordMutation()
 
 	const onSubmit = (values: TypeResetPasswordSchema) => {
-		if (recaptchaValue) {
-			reset({ values, recaptcha: recaptchaValue })
-		} else {
-			toast.error('Пожалуйста, завершите reCAPTCHA')
-		}
+		// Отправляем только email без reCAPTCHA
+		reset({ values })
 	}
 
 	return (
@@ -77,15 +70,7 @@ export function ResetPasswordForm() {
 							</FormItem>
 						)}
 					/>
-					<div className='flex justify-center'>
-						<ReCAPTCHA
-							sitekey={
-								process.env.GOOGLE_RECAPTCHA_SITE_KEY as string
-							}
-							onChange={setRecaptchaValue}
-							theme={theme === 'light' ? 'light' : 'dark'}
-						/>
-					</div>
+
 					<Button type='submit' disabled={isLoadingReset}>
 						Сбросить
 					</Button>

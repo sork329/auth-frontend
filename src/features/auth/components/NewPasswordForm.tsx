@@ -1,9 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useTheme } from 'next-themes'
-import { useState } from 'react'
-import ReCAPTCHA from 'react-google-recaptcha'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -27,9 +24,6 @@ import { AuthWrapper } from './index'
  * Форма для установки нового пароля.
  */
 export function NewPasswordForm() {
-	const { theme } = useTheme()
-	const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
-
 	const form = useForm<TypeNewPasswordSchema>({
 		resolver: zodResolver(NewPasswordSchema),
 		defaultValues: {
@@ -40,11 +34,8 @@ export function NewPasswordForm() {
 	const { newPassword, isLoadingNew } = useNewPasswordMutation()
 
 	const onSubmit = (values: TypeNewPasswordSchema) => {
-		if (recaptchaValue) {
-			newPassword({ values, recaptcha: recaptchaValue })
-		} else {
-			toast.error('Пожалуйста, завершите reCAPTCHA')
-		}
+		// Просто отправляем данные формы без reCAPTCHA
+		newPassword({ values })
 	}
 
 	return (
@@ -77,15 +68,6 @@ export function NewPasswordForm() {
 							</FormItem>
 						)}
 					/>
-					<div className='flex justify-center'>
-						<ReCAPTCHA
-							sitekey={
-								process.env.GOOGLE_RECAPTCHA_SITE_KEY as string
-							}
-							onChange={setRecaptchaValue}
-							theme={theme === 'light' ? 'light' : 'dark'}
-						/>
-					</div>
 					<Button type='submit' disabled={isLoadingNew}>
 						Продолжить
 					</Button>

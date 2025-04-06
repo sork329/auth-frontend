@@ -7,18 +7,13 @@ import { TypeResetPasswordSchema } from '../schemes'
 import { passwordRecoveryService } from '../services'
 
 /**
- * Хук для выполнения мутации сброса пароля.
+ * Хук для выполнения мутации сброса пароля (без reCAPTCHA).
  */
 export function useResetPasswordMutation() {
 	const { mutate: reset, isPending: isLoadingReset } = useMutation({
 		mutationKey: ['reset password'],
-		mutationFn: ({
-			values,
-			recaptcha
-		}: {
-			values: TypeResetPasswordSchema
-			recaptcha: string
-		}) => passwordRecoveryService.reset(values, recaptcha),
+		mutationFn: ({ values }: { values: TypeResetPasswordSchema }) =>
+			passwordRecoveryService.reset(values),
 		onSuccess() {
 			toast.success('Проверьте почту', {
 				description:

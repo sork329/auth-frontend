@@ -18,13 +18,8 @@ export function useLoginMutation(
 
 	const { mutate: login, isPending: isLoadingLogin } = useMutation({
 		mutationKey: ['login user'],
-		mutationFn: ({
-			values,
-			recaptcha
-		}: {
-			values: TypeLoginSchema
-			recaptcha: string
-		}) => authService.login(values, recaptcha),
+		mutationFn: ({ values }: { values: TypeLoginSchema }) =>
+			authService.login(values),
 		onSuccess(data: any) {
 			if (data.message) {
 				toastMessageHandler(data)
